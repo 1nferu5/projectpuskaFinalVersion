@@ -1,4 +1,4 @@
-package ru.sfedu.opencv;
+package ru.sfedu.projectpuskaFinalVersion;
 
 public class Main {
     public static void main(String[] args) {

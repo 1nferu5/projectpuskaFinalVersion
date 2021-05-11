@@ -1,7 +1,7 @@
-package ru.sfedu.opencv;
+package ru.sfedu.projectpuskaFinalVersion;
 
 public class Constants {
-    /* В константы вынесены имена проперти, а в пропертях уже находятся пути до бинарников */
+
     public static final String CFG_KEY = "cfg";
     public static final String CFG_DEFAULT_VALUE = "src/main/resources/config.properties";
     public static final String PATH_TO_NATIVE_LIB_WINDOWS = "ru.sfedu.cv.PathToNativeLibs.Windows";

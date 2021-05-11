@@ -1,4 +1,4 @@
-package ru.sfedu.opencv.utils;
+package ru.sfedu.projectpuskaFinalVersion.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static ru.sfedu.opencv.Constants.CFG_DEFAULT_VALUE;
-import static ru.sfedu.opencv.Constants.CFG_KEY;
+import static ru.sfedu.projectpuskaFinalVersion.Constants.CFG_DEFAULT_VALUE;
+import static ru.sfedu.projectpuskaFinalVersion.Constants.CFG_KEY;
 
 public class ConfigurationUtil {
 

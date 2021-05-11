@@ -1,11 +1,12 @@
-package ru.sfedu.opencv.utils;
+package ru.sfedu.projectpuskaFinalVersion.utils;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static ru.sfedu.opencv.Constants.CFG_KEY;
-import static ru.sfedu.opencv.Constants.PATH_TO_NATIVE_LIB_WINDOWS;
+import static ru.sfedu.projectpuskaFinalVersion.Constants.CFG_KEY;
+import static ru.sfedu.projectpuskaFinalVersion.Constants.PATH_TO_NATIVE_LIB_WINDOWS;
+
 
 public class ConfigurationUtilTest {
 
