@@ -14,6 +14,7 @@ import ru.sfedu.projectpuskaFinalVersion.Constants;
 import ru.sfedu.projectpuskaFinalVersion.Main;
 import ru.sfedu.projectpuskaFinalVersion.utils.ConfigurationUtil;
 
+import static org.opencv.core.CvType.CV_8UC3;
 import static ru.sfedu.projectpuskaFinalVersion.utils.ConfigurationUtil.getConfigurationEntry;
 
 public class ImageAPI {
@@ -149,8 +150,34 @@ public class ImageAPI {
 //
 //    }
 
+    public Mat task4ToWarp() throws IOException {
+        Mat defaultMat = Imgcodecs.imread(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
+
+        Mat transMat = new Mat(2, 3, CvType.CV_64FC1);
+        MatOfPoint2f src = new MatOfPoint2f(
+                new Point(0, 0),
+                new Point(defaultMat.cols(), 0),
+                new Point(0, defaultMat.rows()),
+                new Point(defaultMat.cols(), defaultMat.rows())
+        );
+        int x = 50;
+        int y = 50;
+        MatOfPoint2f target = new MatOfPoint2f(
+                new Point(x, y),
+                new Point(defaultMat.cols() - x, 0),
+                new Point(0, defaultMat.rows() - y),
+                new Point(defaultMat.cols() - x, defaultMat.rows() - y)
+        );
+
+        Mat matWarp = Imgproc.getPerspectiveTransform(src, target);
+        Mat res = new Mat();
+        Imgproc.warpPerspective(defaultMat, res, matWarp, defaultMat.size());
+
+        return  res;
+    }
+
     public Mat task5ToFill(Integer initVal) throws IOException {
-        Map<Integer, String> resultMap = new HashMap<>();
+
         Mat defaultMat = Imgcodecs.imread(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         // координаты точки начала анализа параметров цвета заданного изображения
@@ -166,4 +193,29 @@ public class ImageAPI {
         return defaultMat;
     }
 
+    public Mat getNoise(){
+        Mat mat = new Mat(new Size(1000, 600), CV_8UC3, new Scalar(0, 0, 0));
+        Core.randn(mat, 20, 50);
+        Core.add(mat, mat, mat);
+        return mat;
+    }
+
+    public Mat pyramid() throws IOException{
+        Mat defaultMat = getNoise();
+
+        Mat mask = new Mat();
+
+        Imgproc.pyrDown(defaultMat, mask);
+        showImage(mask);
+
+        Imgproc.pyrUp(mask, mask);
+        showImage(mask);
+
+        Core.subtract(defaultMat, mask, mask);
+        showImage(mask);
+
+        return mask;
+    }
 }
+
+

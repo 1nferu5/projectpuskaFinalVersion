@@ -194,9 +194,25 @@ public class ImageAPITest {
     }
 
     @Test
+    public void task4ToWarp() throws Exception {
+        ImageAPI api = new ImageAPI();
+        Mat mat = api.task4ToWarp();
+        api.showImage(mat);
+    }
+
+    @Test
     public void task5ToFeel() throws Exception {
         ImageAPI api = new ImageAPI();
         Mat mat = api.task5ToFill(80);
         api.showImage(mat);
     }
+
+    @Test
+    public void pyramid_test() throws Exception{
+        ImageAPI api = new ImageAPI();
+        Mat mat = api.pyramid();
+        api.showImage(mat);
+    }
+
+
 }
