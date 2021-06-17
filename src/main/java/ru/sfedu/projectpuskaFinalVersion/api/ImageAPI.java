@@ -2,6 +2,8 @@ package ru.sfedu.projectpuskaFinalVersion.api;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+
+import java.io.IOException;
 import java.util.*;
 
 import org.opencv.core.*;
@@ -10,6 +12,8 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import ru.sfedu.projectpuskaFinalVersion.Constants;
 import ru.sfedu.projectpuskaFinalVersion.Main;
+import ru.sfedu.projectpuskaFinalVersion.utils.ConfigurationUtil;
+
 import static ru.sfedu.projectpuskaFinalVersion.utils.ConfigurationUtil.getConfigurationEntry;
 
 public class ImageAPI {
@@ -144,5 +148,22 @@ public class ImageAPI {
 //        Mat defaultMat = Imgcodecs.imread(showImage);
 //
 //    }
+
+    public Mat task5ToFill(Integer initVal) throws IOException {
+        Map<Integer, String> resultMap = new HashMap<>();
+        Mat defaultMat = Imgcodecs.imread(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
+
+        // координаты точки начала анализа параметров цвета заданного изображения
+        Point seedPoint = new Point(0,0);
+        // цвет заливки (зеленый)
+        Scalar newVal = new Scalar(0,255,0);
+        Scalar loDiff = new Scalar(initVal,initVal,initVal);
+        Scalar upDiff = new Scalar(initVal,initVal,initVal);
+        Mat mask = new Mat();
+
+        Imgproc.floodFill(defaultMat, mask, seedPoint, newVal, new Rect(), loDiff, upDiff,
+                Imgproc.FLOODFILL_FIXED_RANGE + 8);
+        return defaultMat;
+    }
 
 }

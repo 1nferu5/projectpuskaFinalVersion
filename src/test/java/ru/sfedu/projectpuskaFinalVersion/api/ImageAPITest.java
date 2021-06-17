@@ -27,7 +27,7 @@ import static ru.sfedu.projectpuskaFinalVersion.Constants.CFG_KEY;
 public class ImageAPITest {
     private  static final Logger logger = LogManager.getLogger(Main.class);
 
-    public static final String TEST_IMG="C:\\Users\\konto\\deaProjects\\blm.jpg";
+    public static final String TEST_IMG="/home/hp/test_java/blm.jpg";
 
 
     @Before
@@ -64,7 +64,7 @@ public class ImageAPITest {
     public void convertIntoBlackByChannel() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\ar.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
         api.showImage(defaultMat);
         Mat rmBlue = api.convertIntoBlackChannel(0,defaultMat);
         api.showImage(rmBlue);
@@ -86,7 +86,7 @@ public class ImageAPITest {
     public void sobel() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\Ks.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         api.showImage(defaultMat);
 
@@ -97,7 +97,7 @@ public class ImageAPITest {
     public void Laplace() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\IM.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         api.showImage(defaultMat);
 
@@ -108,7 +108,7 @@ public class ImageAPITest {
     public void mirrorImage() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\IM.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         api.showImage(defaultMat);
 
@@ -121,9 +121,9 @@ public class ImageAPITest {
 
 //        Mat defaultMat = api.loadImage("C:\\KS.jpg");
 
-        Mat defaultMat1 = api.loadImage("C:\\ss.png");
+        Mat defaultMat1 = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 //        defaultMat1 = api.convertIntoBlackChannel(1, defaultMat1);
-        Mat defaultMat2 = api.loadImage("C:\\s.png");
+        Mat defaultMat2 = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img2"));
 //        api.showImage(defaultMat);
 
 //        List<Mat> list = Arrays.asList(defaultMat, defaultMat1);
@@ -135,7 +135,7 @@ public class ImageAPITest {
     public void repeatImage() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\IM.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         api.showImage(defaultMat);
         Mat repeatImage = api.repeatImage(defaultMat, 2, 2);
@@ -146,7 +146,7 @@ public class ImageAPITest {
     public void resizeImage() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\IM.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         api.showImage(defaultMat);
 
@@ -158,7 +158,7 @@ public class ImageAPITest {
     public void geometryChangeImage() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage("C:\\IM.jpg");
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
 
         api.showImage(defaultMat);
 
@@ -181,15 +181,22 @@ public class ImageAPITest {
             Mat dst1 = defaultMat.clone();
 
             Imgproc.dilate(defaultMat, dst1, morphRect);
-            api.saveMatImageOnDisk(dst1, "C:\\int\\KS"+ integer.incrementAndGet()+".jpg");
+            api.saveMatImageOnDisk(dst1, String.format(ConfigurationUtil.getConfigurationEntry("lab3.defoult.img3"), integer.incrementAndGet()));
 
             Mat dst1_1 = defaultMat.clone();
             Imgproc.morphologyEx(defaultMat, dst1_1, Imgproc.MORPH_GRADIENT, morphRect);
-            api.saveMatImageOnDisk(dst1_1, "C:\\int\\KS"+ integer.incrementAndGet()+".jpg");
+            api.saveMatImageOnDisk(dst1_1,  String.format(ConfigurationUtil.getConfigurationEntry("lab3.defoult.img3"), integer.incrementAndGet()));
 
             Mat dst1_2 = defaultMat.clone();
             Imgproc.morphologyEx(defaultMat, dst1_2, Imgproc.MORPH_BLACKHAT, morphRect);
-            api.saveMatImageOnDisk(dst1_2, "C:\\int\\KS"+ integer.incrementAndGet()+".jpg");
+            api.saveMatImageOnDisk(dst1_2,  String.format(ConfigurationUtil.getConfigurationEntry("lab3.defoult.img3"), integer.incrementAndGet()));
         }
+    }
+
+    @Test
+    public void task5ToFeel() throws Exception {
+        ImageAPI api = new ImageAPI();
+        Mat mat = api.task5ToFill(80);
+        api.showImage(mat);
     }
 }
