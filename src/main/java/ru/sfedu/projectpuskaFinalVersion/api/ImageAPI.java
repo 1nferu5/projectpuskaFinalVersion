@@ -5,11 +5,13 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.opencv.core.*;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.photo.Photo;
 import ru.sfedu.projectpuskaFinalVersion.Constants;
 import ru.sfedu.projectpuskaFinalVersion.Main;
 import ru.sfedu.projectpuskaFinalVersion.utils.ConfigurationUtil;
@@ -19,6 +21,7 @@ import static ru.sfedu.projectpuskaFinalVersion.utils.ConfigurationUtil.getConfi
 
 public class ImageAPI {
     private  static final Logger logger = LogManager.getLogger(Main.class);
+    private Logger log;
 
     public ImageAPI() throws Exception {
         logger.info("Checking OS.....");
@@ -215,6 +218,84 @@ public class ImageAPI {
         showImage(mask);
 
         return mask;
+    }
+
+
+    public Mat square() throws IOException {
+
+        Mat defaultMat = Imgcodecs.imread(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img3"));
+
+        Mat grayImage = new Mat();
+        Imgproc.cvtColor(defaultMat, grayImage, Imgproc.COLOR_BGR2GRAY);
+        showImage(grayImage);
+
+        Mat denoisingImage = new Mat();
+        Photo.fastNlMeansDenoising(grayImage, denoisingImage);
+        showImage(denoisingImage);
+
+
+        Mat histogramEqualizationImage = new Mat();
+        Imgproc.equalizeHist(denoisingImage, histogramEqualizationImage);
+        showImage(histogramEqualizationImage);
+
+
+        Mat morphologicalOpeningImage = new Mat();
+        Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
+        Imgproc.morphologyEx(histogramEqualizationImage, morphologicalOpeningImage, Imgproc.MORPH_RECT, kernel);
+        showImage(morphologicalOpeningImage);
+
+
+        Mat subtractImage = new Mat();
+        Core.subtract(histogramEqualizationImage, morphologicalOpeningImage, subtractImage);
+        showImage(subtractImage);
+
+
+        Mat thresholdImage = new Mat();
+        double threshold = Imgproc.threshold(subtractImage, thresholdImage, 50, 255, Imgproc.THRESH_OTSU);
+
+
+        thresholdImage.convertTo(thresholdImage, CvType.CV_16SC1);
+        showImage(subtractImage);
+
+        Mat edgeImage = new Mat();
+        thresholdImage.convertTo(thresholdImage, CvType.CV_8U);
+        Imgproc.Canny(thresholdImage, edgeImage, threshold, threshold * 3, 3, true);
+        showImage(edgeImage);
+
+        Mat dilatedImage = new Mat();
+        Imgproc.dilate(thresholdImage, dilatedImage, kernel);
+        showImage(dilatedImage);
+
+
+        List<MatOfPoint> contours = new ArrayList<>();
+        Imgproc.findContours(dilatedImage, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        contours.sort(Collections.reverseOrder(Comparator.comparing(Imgproc::contourArea)));
+//        System.out.println(contours.size());
+
+        AtomicInteger integer = new AtomicInteger(8);
+
+
+        for (MatOfPoint contour : contours.subList(0, 1)) {
+
+            MatOfPoint2f point2f = new MatOfPoint2f();
+            MatOfPoint2f approxContour2f = new MatOfPoint2f();
+            MatOfPoint approxContour = new MatOfPoint();
+            contour.convertTo(point2f, CvType.CV_32FC2);
+            double arcLength = Imgproc.arcLength(point2f, true);
+            Imgproc.approxPolyDP(point2f, approxContour2f, 0.03 * arcLength, true);
+            approxContour2f.convertTo(approxContour, CvType.CV_32S);
+            Rect rect = Imgproc.boundingRect(approxContour);
+            double ratio = (double) rect.height / rect.width;
+            if (Math.abs(0.3 - ratio) > 0.15) {
+                continue;
+            }
+            Mat submat = defaultMat.submat(rect);
+            Imgproc.resize(submat, submat, new Size(400, 400 * ratio));
+
+        }
+
+        return null;
     }
 }
 

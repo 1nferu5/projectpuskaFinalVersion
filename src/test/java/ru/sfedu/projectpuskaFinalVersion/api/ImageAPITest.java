@@ -97,7 +97,7 @@ public class ImageAPITest {
     public void Laplace() throws Exception {
         ImageAPI api = new ImageAPI();
 
-        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
+        Mat defaultMat = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img2"));
 
         api.showImage(defaultMat);
 
@@ -121,9 +121,9 @@ public class ImageAPITest {
 
 //        Mat defaultMat = api.loadImage("C:\\KS.jpg");
 
-        Mat defaultMat1 = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img1"));
+        Mat defaultMat1 = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab3.defoult.imgj"));
 //        defaultMat1 = api.convertIntoBlackChannel(1, defaultMat1);
-        Mat defaultMat2 = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab4.defoult.img2"));
+        Mat defaultMat2 = api.loadImage(ConfigurationUtil.getConfigurationEntry("lab3.defoult.imgjj"));
 //        api.showImage(defaultMat);
 
 //        List<Mat> list = Arrays.asList(defaultMat, defaultMat1);
@@ -214,5 +214,9 @@ public class ImageAPITest {
         api.showImage(mat);
     }
 
-
+    @Test
+    public void square() throws Exception{
+        ImageAPI api = new ImageAPI();
+        api.square();
+    }
 }
